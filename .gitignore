@@ -34,4 +34,6 @@ Thumbs.db
 *.zip
 *.pdf
 
+# Build info cache
+*.tsbuildinfo
 

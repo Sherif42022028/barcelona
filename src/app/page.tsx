@@ -2,247 +2,281 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Navbar } from "@/components/Navbar";
-import { HeaderScoreboard } from "@/components/HeaderScoreboard";
-import { STAGES_DATA, SKILL_METRICS, MATCH_CASES } from "@/data/academyData";
+import { domainService } from "@/lib/domain/service";
 import {
-  Play,
-  Lock,
   Compass,
-  Activity,
-  Brain,
-  Sparkles,
   ArrowRight,
-  ShieldCheck
+  BookOpen,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
+  Brain,
+  Shield,
+  Activity,
+  Award,
+  Zap,
+  ChevronLeft
 } from "lucide-react";
 
-export default function DashboardPage() {
-  const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
+export default function StudentDashboardPage() {
+  const [progress, setProgress] = useState(domainService.getStudentProgress());
+  const [mastery, setMastery] = useState(domainService.getKnowledgeMastery());
+  const [recommendations, setRecommendations] = useState(domainService.getRecommendations());
 
-  useEffect(() => {
-    const saved = localStorage.getItem("fcb_completed_modules");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          setCompletedLessonIds(parsed);
-        }
-      } catch (e) {
-        console.error("Parse error", e);
-      }
-    }
-  }, []);
-
-  const buildStage = STAGES_DATA[0];
-  const activeLesson = buildStage.modules[0]?.lessons[0];
+  const stages = domainService.getStages();
+  const currentStage = stages[0]; // Stage 01 - Building from the Back
+  const currentModules = domainService.getModules(currentStage.id);
+  const nextModule = currentModules.find((m) => !progress.completedModuleIds.includes(m.id)) || currentModules[0];
+  const nextLesson = domainService.getLessons(nextModule.id)[0];
 
   return (
-    <div className="min-h-screen text-[#F8FAFC] pb-24 font-cairo">
-      {/* Site Navbar */}
-      <Navbar />
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      {/* Academy Welcome Banner */}
+      <div className="relative glass-card p-6 sm:p-8 rounded-3xl border border-white/10 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#004D98]/20 via-[#A50044]/20 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* Header Scoreboard */}
-      <HeaderScoreboard
-        currentStageCode="BUILD"
-        stageProgress={68}
-        overallProgress={24}
-        topSkillName="Decision Making"
-        topSkillLevel={72}
-      />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 space-y-10">
-        {/* SECTION 1: CONTINUE YOUR JOURNEY */}
-        <section className="glass-card p-6 sm:p-8 glass-card-accent shadow-2xl relative overflow-hidden group">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-            <div className="space-y-3 max-w-3xl">
-              <div className="flex items-center gap-2">
-                <span className="bg-gradient-to-r from-[#A50044] to-[#70002E] text-[#EDBB00] px-3 py-1 text-xs font-oswald font-bold tracking-widest uppercase rounded-md border border-[#EDBB00]/30 shadow-md">
-                  CONTINUE YOUR JOURNEY
-                </span>
-                <span className="text-xs font-oswald text-[#38BDF8] font-bold">
-                  STAGE 01: BUILD
-                </span>
-              </div>
-
-              <h2 className="font-oswald text-2xl sm:text-4xl font-bold text-white uppercase leading-tight">
-                {activeLesson ? activeLesson.title : "Building from the Back & Positional Play"}
-              </h2>
-
-              <p className="text-sm text-[#94A3B8] leading-relaxed">
-                {activeLesson ? activeLesson.summary : "تعلم كيفية إنشاء التفوق العددي وتحديد المساحات الحرة من خط البناء الأول."}
+        <div className="relative z-10 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-oswald uppercase tracking-widest text-[#EDBB00] font-bold px-3 py-1 bg-[#004D98]/30 rounded-full border border-[#EDBB00]/30">
+                BARÇA METHODOLOGY ACADEMY
+              </span>
+              <h1 className="font-oswald text-2xl sm:text-4xl font-bold text-white tracking-wide mt-2">
+                مرحباً بك في أكاديمية التحليل والمنهجية التكتيكية
+              </h1>
+              <p className="text-sm font-cairo text-slate-300 max-w-2xl mt-1">
+                نظام تعلّمي موجه لفهم وتطبيق أصول اللعب الموضعي (Positional Play) وبناء اللعب من الخلف عبر التحليل التكتيكي الميداني.
               </p>
-
-              {/* Progress Bar */}
-              <div className="space-y-1.5 pt-2">
-                <div className="flex items-center justify-between text-xs font-oswald font-bold">
-                  <span className="text-[#38BDF8]">Stage Progress:</span>
-                  <span className="text-[#E11D48]">68%</span>
-                </div>
-                <div className="w-full h-2.5 bg-slate-900 rounded-full border border-white/10 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-[#004D98] via-[#38BDF8] to-[#E11D48] w-[68%] transition-all"></div>
-                </div>
-              </div>
             </div>
 
-            {/* Action Button */}
-            <div className="shrink-0 w-full lg:w-auto">
-              <Link
-                href={`/learn/lesson/${activeLesson?.id || "l-1-1"}`}
-                className="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-[#004D98] to-[#002D5E] hover:from-[#002D5E] hover:to-[#004D98] text-white px-8 py-4 rounded-xl text-sm font-oswald uppercase font-bold tracking-wider transition-all shadow-xl hover:shadow-blue-500/20 text-center border border-blue-400/30"
-              >
-                <Play className="w-4 h-4 fill-white" />
-                Continue Lesson ➔
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 2: YOUR LEARNING PATH (4 STAGES) */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
-            <h3 className="font-oswald text-2xl font-bold uppercase text-white flex items-center gap-3">
-              <Compass className="w-6 h-6 text-[#E11D48]" />
-              YOUR LEARNING PATH (المسار التعليمي المرحلي)
-            </h3>
+            {/* Admin Portal Toggle Link */}
             <Link
-              href="/learn/path"
-              className="text-xs font-oswald font-bold text-[#38BDF8] hover:text-white uppercase flex items-center gap-1 transition-colors"
+              href="/admin"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-oswald text-[#38BDF8] hover:text-white transition-all shadow-lg"
             >
-              View Full Path ➔
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span>ADMIN CMS PORTAL</span>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {STAGES_DATA.map((stage, idx) => (
-              <div
-                key={stage.id}
-                className={`glass-card p-6 flex flex-col justify-between relative transition-all ${
-                  stage.unlocked
-                    ? "border-[#004D98]/60 shadow-xl"
-                    : "opacity-60 bg-slate-950/40 border-white/5"
-                }`}
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="scoreboard-number text-3xl text-[#38BDF8]">
-                      {stage.numberStr}
-                    </span>
-                    <span
-                      className={`text-xs font-oswald font-bold px-2.5 py-0.5 rounded-md border ${
-                        stage.unlocked
-                          ? "bg-emerald-950/60 text-emerald-400 border-emerald-500/40"
-                          : "bg-slate-900 text-gray-500 border-white/10"
-                      }`}
-                    >
-                      {stage.unlocked ? `${stage.progress}%` : "🔒 Locked"}
-                    </span>
-                  </div>
-
-                  <h4 className="font-oswald text-xl font-bold text-white">
-                    {stage.codeName}
-                  </h4>
-                  <p className="text-xs font-oswald font-semibold text-[#E11D48]">
-                    {stage.title}
-                  </p>
-                  <p className="text-xs text-[#94A3B8] leading-relaxed line-clamp-2 pt-1">
-                    {stage.question}
-                  </p>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-white/10">
-                  {stage.unlocked ? (
-                    <Link
-                      href={`/learn/stage/${stage.id}`}
-                      className="block text-center py-2 text-xs font-oswald uppercase font-bold text-white bg-[#004D98]/40 hover:bg-[#004D98] border border-[#004D98] rounded-lg transition-colors"
-                    >
-                      Enter Stage ➔
-                    </Link>
-                  ) : (
-                    <div className="text-center py-2 text-xs font-oswald text-gray-500 font-semibold flex items-center justify-center gap-1.5 bg-slate-900/60 rounded-lg">
-                      <Lock className="w-3.5 h-3.5" />
-                      Complete Stage 0{idx}
-                    </div>
-                  )}
-                </div>
+          {/* Primary Action Banner: Continue Learning */}
+          <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-black/30 p-5 rounded-2xl border border-white/5">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs font-oswald text-[#38BDF8]">
+                <Zap className="w-4 h-4 text-[#F59E0B]" />
+                <span>RECOMMENDED NEXT STEP (الخطوة التالية الموصى بها)</span>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* SECTION 3: TODAY'S ANALYSIS & FRAMEWORKS */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Today's Analysis Card */}
-          <div className="lg:col-span-2 glass-card p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2">
-                <Activity className="w-5 h-5 text-[#E11D48]" />
-                <h3 className="font-oswald text-xl font-bold uppercase text-white">
-                  TODAY'S TACTICAL ANALYSIS
-                </h3>
-              </div>
-              <span className="text-xs font-oswald bg-[#A50044]/30 text-[#E11D48] px-2.5 py-0.5 border border-[#A50044]/40 font-bold rounded-md">
-                Intermediate
-              </span>
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-xs font-oswald text-[#38BDF8] font-bold uppercase">
-                {MATCH_CASES[0]?.matchTitle} — [{MATCH_CASES[0]?.minuteTimestamp}]
-              </span>
-              <h4 className="font-oswald text-lg font-bold text-white">
-                {MATCH_CASES[0]?.title}
-              </h4>
-              <p className="text-sm text-[#94A3B8] leading-relaxed">
-                {MATCH_CASES[0]?.questionText}
+              <h2 className="font-oswald text-lg font-bold text-white">
+                {nextModule.title}
+              </h2>
+              <p className="text-xs font-cairo text-slate-300">
+                {nextModule.subtitle} — {nextModule.description}
               </p>
             </div>
 
-            <div className="pt-2">
+            <Link
+              href={`/lesson/${nextLesson.id}`}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#004D98] to-[#A50044] hover:from-[#A50044] hover:to-[#004D98] text-white font-oswald font-bold text-xs uppercase tracking-wider border border-[#EDBB00]/40 shadow-xl transition-all shrink-0"
+            >
+              <span>CONTINUE LESSON</span>
+              <ChevronLeft className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid: Current Stage Progress + Evidence-Based Recommendations */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Current Stage Overview */}
+        <div className="lg:col-span-8 space-y-6">
+          <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <span className="text-xs font-oswald text-[#38BDF8] font-bold">
+                  STAGE 0{currentStage.stageNumber} OF 04
+                </span>
+                <h2 className="font-oswald text-xl font-bold text-white">
+                  {currentStage.title}
+                </h2>
+              </div>
               <Link
-                href="/analyze/lab"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#A50044] to-[#70002E] hover:from-[#70002E] hover:to-[#A50044] text-white px-6 py-2.5 rounded-xl text-xs font-oswald uppercase font-bold tracking-wider transition-all shadow-lg"
+                href="/learn/path"
+                className="text-xs font-cairo text-[#EDBB00] hover:underline flex items-center gap-1"
               >
-                Open Analysis Lab ➔
+                <span>عرض مسار التعلم الكامل</span>
+                <ChevronLeft className="w-3.5 h-3.5" />
               </Link>
+            </div>
+
+            {/* Stage Modules List */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {currentModules.map((module) => {
+                const isCompleted = progress.completedModuleIds.includes(module.id);
+                const isNext = module.id === nextModule.id;
+
+                return (
+                  <Link
+                    key={module.id}
+                    href={`/learn/module/${module.id}`}
+                    className={`glass-card p-4 rounded-xl border text-right transition-all flex flex-col justify-between gap-3 ${
+                      isCompleted
+                        ? "border-emerald-500/40 bg-emerald-950/20"
+                        : isNext
+                        ? "border-[#004D98] bg-[#004D98]/20 shadow-lg shadow-[#004D98]/20"
+                        : "border-white/10 bg-slate-900/60 opacity-80"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300">
+                        MOD {module.numberStr}
+                      </span>
+                      {isCompleted ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      ) : (
+                        <span className="text-[10px] font-cairo text-slate-400">
+                          {module.positionRole}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <h3 className="font-oswald text-sm font-bold text-white">
+                        {module.title}
+                      </h3>
+                      <p className="text-xs font-cairo text-slate-300 line-clamp-2 mt-1">
+                        {module.subtitle}
+                      </p>
+                    </div>
+
+                    <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-cairo text-slate-400">
+                      <span>{module.lessonIds.length} دروس تعليمية</span>
+                      <span className="text-[#38BDF8]">عرض الموديول ←</span>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
-          {/* Your Skill Metrics Summary */}
-          <div className="glass-card p-6 shadow-xl space-y-4">
+          {/* Analysis & Frameworks Quick Access */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link
+              href="/analyze/lab"
+              className="glass-card p-5 rounded-xl border border-white/10 hover:border-[#A50044]/50 transition-all space-y-2 group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-lg bg-[#A50044]/30 text-[#A50044] border border-[#A50044]/40">
+                  <Activity className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="font-oswald text-base font-bold text-white group-hover:text-red-400 transition-colors">
+                    MATCH ANALYSIS LAB
+                  </h3>
+                  <p className="text-xs font-cairo text-slate-400">
+                    مختبر التحليل التكتيكي لللقطات الميدانية
+                  </p>
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/frameworks"
+              className="glass-card p-5 rounded-xl border border-white/10 hover:border-[#004D98]/50 transition-all space-y-2 group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-lg bg-[#004D98]/30 text-[#004D98] border border-[#004D98]/40">
+                  <Brain className="w-5 h-5 text-[#38BDF8]" />
+                </div>
+                <div>
+                  <h3 className="font-oswald text-base font-bold text-white group-hover:text-[#38BDF8] transition-colors">
+                    METHODOLOGY FRAMEWORKS
+                  </h3>
+                  <p className="text-xs font-cairo text-slate-400">
+                    مكتبة النماذج التكتيكية والأطر المنهجية
+                  </p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Sidebar: Knowledge Mastery & Evidence-Based Recommendations */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Evidence-Based Recommendations */}
+          <div className="glass-card p-5 rounded-2xl border border-[#F59E0B]/30 space-y-4">
+            <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+              <AlertCircle className="w-4 h-4 text-[#F59E0B]" />
+              <h2 className="font-oswald text-sm font-bold text-white uppercase tracking-wider">
+                PERSONALIZED RECOMMENDATIONS
+              </h2>
+            </div>
+
+            <div className="space-y-3">
+              {recommendations.map((rec) => (
+                <div
+                  key={rec.id}
+                  className="p-3.5 rounded-xl bg-slate-900/80 border border-white/10 space-y-2 text-xs font-cairo"
+                >
+                  <div className="flex items-center justify-between text-[10px] font-mono text-[#F59E0B] font-bold uppercase">
+                    <span>{rec.type}</span>
+                    <span>{rec.priority} PRIORITY</span>
+                  </div>
+                  <h3 className="font-bold text-white">{rec.title}</h3>
+                  <p className="text-slate-300 text-[11px] leading-relaxed">
+                    {rec.reason}
+                  </p>
+                  <Link
+                    href={`/lesson/${rec.targetId}`}
+                    className="block text-center py-1.5 rounded bg-white/10 hover:bg-white/20 text-white font-oswald text-[11px] font-bold uppercase transition-colors mt-1"
+                  >
+                    START REVIEW
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Knowledge Mastery Overview */}
+          <div className="glass-card p-5 rounded-2xl border border-white/10 space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
-                <Brain className="w-5 h-5 text-[#38BDF8]" />
-                <h3 className="font-oswald text-xl font-bold uppercase text-white">
-                  SKILL METRICS
-                </h3>
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                <h2 className="font-oswald text-sm font-bold text-white uppercase tracking-wider">
+                  KNOWLEDGE MASTERY
+                </h2>
               </div>
-              <Link
-                href="/progress"
-                className="text-xs font-oswald text-[#38BDF8] hover:underline font-bold"
-              >
-                View Radar ➔
+              <Link href="/progress" className="text-[11px] text-[#38BDF8] font-cairo hover:underline">
+                التفاصيل ←
               </Link>
             </div>
 
-            <div className="space-y-3.5">
-              {SKILL_METRICS.slice(0, 4).map((skill) => (
-                <div key={skill.id} className="space-y-1">
-                  <div className="flex justify-between text-xs font-cairo">
-                    <span className="font-bold text-gray-200">{skill.nameAr}</span>
-                    <span className="font-oswald font-bold text-[#38BDF8]">{skill.level}%</span>
+            <div className="space-y-3 font-cairo text-xs">
+              {mastery.map((item) => (
+                <div key={item.knowledgeId} className="space-y-1">
+                  <div className="flex items-center justify-between text-slate-300">
+                    <span className="truncate max-w-[180px]">{item.knowledgeTitle}</span>
+                    <span className="font-mono text-emerald-400 font-bold">
+                      {item.scorePercentage}%
+                    </span>
                   </div>
-                  <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                  <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden border border-white/5">
                     <div
-                      className="h-full bg-gradient-to-r from-[#004D98] to-[#38BDF8]"
-                      style={{ width: `${skill.level}%` }}
-                    ></div>
+                      style={{ width: `${item.scorePercentage}%` }}
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        item.scorePercentage >= 80
+                          ? "bg-emerald-400"
+                          : item.scorePercentage >= 60
+                          ? "bg-amber-400"
+                          : "bg-rose-500"
+                      }`}
+                    />
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </div>
+    </main>
   );
 }

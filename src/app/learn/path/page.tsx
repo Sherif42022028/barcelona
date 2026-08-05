@@ -2,109 +2,135 @@
 
 import React from "react";
 import Link from "next/link";
-import { Navbar } from "@/components/Navbar";
-import { HeaderScoreboard } from "@/components/HeaderScoreboard";
-import { STAGES_DATA } from "@/data/academyData";
-import { Compass, Lock, CheckCircle, ArrowRight } from "lucide-react";
+import { domainService } from "@/lib/domain/service";
+import { Compass, CheckCircle2, Lock, ArrowLeft, Shield, BookOpen, Activity, ChevronLeft } from "lucide-react";
 
-export default function LearningPathPage() {
+export default function AcademyLearningPathPage() {
+  const stages = domainService.getStages();
+  const progress = domainService.getStudentProgress();
+
   return (
-    <div className="min-h-screen text-[#F8FAFC] pb-24 font-cairo">
-      <Navbar />
-      <HeaderScoreboard />
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      {/* Header Banner */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-3">
+        <span className="text-xs font-oswald text-[#EDBB00] font-bold uppercase tracking-widest px-3 py-1 bg-[#004D98]/30 rounded-full border border-[#EDBB00]/30">
+          BARÇA ACADEMY CURRICULUM
+        </span>
+        <h1 className="font-oswald text-2xl sm:text-4xl font-bold text-white tracking-wide">
+          مسار التعلم والتأهيل التكتيكي المنهجي
+        </h1>
+        <p className="text-sm font-cairo text-slate-300 max-w-3xl">
+          أربعة مراحل تعليمية متكاملة مصممة من الوثائق الرسمية للعب الموضعي: من بناء اللعب حتى التكتيك والتحليل والتطبيق الميداني.
+        </p>
+      </div>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 space-y-8">
-        {/* Title Header */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Compass className="w-5 h-5 text-[#E11D48]" />
-              <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest">
-                ACADEMY CURRICULUM
-              </span>
-            </div>
-            <h2 className="font-oswald text-3xl font-bold text-white uppercase">
-              LEARNING PATH (مسار التعلم المرحلي)
-            </h2>
-          </div>
-          <div className="text-right">
-            <span className="text-xs text-[#94A3B8] font-oswald block uppercase">Overall Progress</span>
-            <span className="scoreboard-number text-3xl text-[#38BDF8]">24%</span>
-          </div>
-        </div>
+      {/* 4 Stages Tree */}
+      <div className="space-y-8">
+        {stages.map((stage) => {
+          const modules = domainService.getModules(stage.id);
+          const isCompleted = modules.every((m) => progress.completedModuleIds.includes(m.id));
 
-        {/* Stages Timeline */}
-        <div className="space-y-6">
-          {STAGES_DATA.map((stage, idx) => (
+          return (
             <div
               key={stage.id}
-              className={`glass-card p-6 sm:p-8 transition-all shadow-xl ${
-                stage.unlocked
-                  ? "border-[#004D98]/60 glass-card-accent"
-                  : "opacity-60 bg-slate-950/40 border-white/5"
-              }`}
+              className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6 relative overflow-hidden"
             >
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div className="space-y-2 max-w-3xl">
+              {/* Top Blaugrana Accent Line */}
+              <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-[#004D98] via-[#EDBB00] to-[#A50044]"></div>
+
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div className="space-y-1">
                   <div className="flex items-center gap-3">
-                    <span className="scoreboard-number text-4xl text-[#38BDF8]">
-                      {stage.numberStr}
+                    <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-[#004D98]/40 text-[#38BDF8] border border-[#004D98]">
+                      STAGE 0{stage.stageNumber}
                     </span>
-                    <div>
-                      <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest block">
-                        STAGE {stage.numberStr}: {stage.codeName}
-                      </span>
-                      <h3 className="font-oswald text-2xl font-bold text-white">
-                        {stage.title}
-                      </h3>
-                    </div>
+                    <h2 className="font-oswald text-2xl font-bold text-white">
+                      {stage.title}
+                    </h2>
                   </div>
-
-                  <p className="text-xs font-oswald text-[#38BDF8] font-bold">
-                    {stage.question}
+                  <p className="text-xs font-cairo text-slate-300">
+                    {stage.subtitle} — {stage.description}
                   </p>
-
-                  <p className="text-sm text-[#94A3B8] leading-relaxed">
-                    {stage.description}
-                  </p>
-
-                  {/* Modules List */}
-                  {stage.unlocked && stage.modules.length > 0 && (
-                    <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                      {stage.modules.map((m) => (
-                        <div
-                          key={m.id}
-                          className="flex items-center gap-2 p-2.5 bg-slate-900/60 border border-white/10 rounded-lg text-gray-200"
-                        >
-                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span className="font-semibold">{m.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
 
-                {/* Right Action */}
-                <div className="shrink-0 w-full md:w-auto">
-                  {stage.unlocked ? (
-                    <Link
-                      href={`/learn/stage/${stage.id}`}
-                      className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#004D98] to-[#002D5E] hover:from-[#002D5E] hover:to-[#004D98] text-white px-8 py-3.5 rounded-xl text-sm font-oswald uppercase font-bold tracking-wider transition-all shadow-lg border border-blue-400/30"
-                    >
-                      Explore Stage ➔
-                    </Link>
+                <div className="flex items-center gap-2">
+                  {isCompleted ? (
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-xs font-cairo font-bold">
+                      <CheckCircle2 className="w-4 h-4" />
+                      مكتمل بالكامل
+                    </span>
                   ) : (
-                    <div className="w-full md:w-auto p-4 text-center text-xs font-oswald text-gray-500 font-bold border border-white/10 bg-slate-950/60 rounded-xl flex items-center justify-center gap-2">
-                      <Lock className="w-4 h-4 text-gray-400" />
-                      Complete Stage 0{idx} First
-                    </div>
+                    <span className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-xs font-cairo">
+                      {modules.length} الموديولات التكتيكية
+                    </span>
                   )}
                 </div>
               </div>
+
+              {/* Modules Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {modules.map((module) => {
+                  const modCompleted = progress.completedModuleIds.includes(module.id);
+                  const firstLesson = domainService.getLessons(module.id)[0];
+
+                  return (
+                    <div
+                      key={module.id}
+                      className={`p-5 rounded-2xl border text-right space-y-3 transition-all flex flex-col justify-between ${
+                        modCompleted
+                          ? "bg-emerald-950/20 border-emerald-500/40"
+                          : "bg-slate-900/60 border-white/10 hover:border-white/20"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300">
+                          MOD {module.numberStr}
+                        </span>
+                        <span className="text-xs font-cairo text-[#38BDF8] font-bold">
+                          {module.positionRole}
+                        </span>
+                      </div>
+
+                      <div className="space-y-1">
+                        <h3 className="font-oswald text-lg font-bold text-white">
+                          {module.title}
+                        </h3>
+                        <p className="text-xs font-cairo text-slate-300 line-clamp-2">
+                          {module.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Objectives Pills */}
+                      <div className="space-y-1 pt-2 border-t border-white/5">
+                        {module.learningObjectives.map((obj) => (
+                          <div key={obj.id} className="text-[11px] font-cairo text-slate-400 flex items-center gap-1.5">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                            <span className="truncate">{obj.statement}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Button */}
+                      <div className="pt-2 flex items-center justify-between gap-2">
+                        {firstLesson ? (
+                          <Link
+                            href={`/lesson/${firstLesson.id}`}
+                            className="w-full text-center py-2 rounded-xl bg-gradient-to-r from-[#004D98] to-[#A50044] hover:from-[#A50044] hover:to-[#004D98] text-white font-oswald text-xs font-bold uppercase tracking-wider transition-all border border-[#EDBB00]/30 shadow-lg"
+                          >
+                            ابدأ الموديول الان
+                          </Link>
+                        ) : (
+                          <span className="text-xs font-cairo text-slate-400">قيد الإعداد</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          ))}
-        </div>
-      </main>
-    </div>
+          );
+        })}
+      </div>
+    </main>
   );
 }
