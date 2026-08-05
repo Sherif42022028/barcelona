@@ -1,121 +1,107 @@
 @import "tailwindcss";
 
 :root {
-  --primary-blue: #004D98;
-  --primary-garnet: #A50044;
-  --accent-gold: #EDBB00;
-  --background: #F7F5F0;
-  --foreground: #1A1A1A;
+  --fcb-navy: #001E42;
+  --fcb-blue: #004D98;
+  --fcb-blue-dark: #002D5E;
+  --fcb-garnet: #A50044;
+  --fcb-garnet-dark: #70002E;
+  --fcb-gold: #EDBB00;
+  --fcb-gold-light: #FFF0B3;
+  --bg-cream: #F8F6F0;
   --card-bg: #FFFFFF;
-  --surface-muted: #ECE9E1;
-  --pitch-green: #0E3625;
-  --pitch-green-light: #164631;
-  --pitch-line: rgba(255, 255, 255, 0.35);
-  --success: #1B8A5A;
-  --border-tactical: rgba(26, 26, 26, 0.14);
+  --text-primary: #121820;
+  --text-muted: #5A6578;
+  --pitch-dark: #0A291C;
+  --pitch-medium: #0F3E2B;
+  --border-color: rgba(0, 30, 66, 0.12);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-radius: 0px !important; /* Sharp corners requirement from DESIGN.md */
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Cairo', 'Source Sans 3', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-primary);
+  font-family: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
+  direction: rtl;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  direction: rtl;
 }
 
+/* Typography Utility Classes */
 .font-oswald {
-  font-family: 'Oswald', sans-serif;
-  letter-spacing: 0.5px;
+  font-family: 'Oswald', 'Barlow Condensed', sans-serif;
 }
 
 .font-cairo {
   font-family: 'Cairo', sans-serif;
 }
 
-/* Signature Blaugrana Diagonal Stripe Motif for Card Headers */
-.blaugrana-stripe-top {
-  position: relative;
+/* Blaugrana Signature Stripe Motifs */
+.blaugrana-header-stripe {
+  background: linear-gradient(90deg, 
+    #004D98 0%, #004D98 25%, 
+    #A50044 25%, #A50044 50%, 
+    #004D98 50%, #004D98 75%, 
+    #A50044 75%, #A50044 100%
+  );
 }
 
-.blaugrana-stripe-top::before {
+.blaugrana-card-accent {
+  position: relative;
+  overflow: hidden;
+}
+
+.blaugrana-card-accent::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, 
-    var(--primary-blue) 0%, 
-    var(--primary-blue) 50%, 
-    var(--primary-garnet) 50%, 
-    var(--primary-garnet) 100%
-  );
+  height: 5px;
+  background: linear-gradient(90deg, #004D98 0%, #004D98 50%, #A50044 50%, #A50044 100%);
 }
 
-.blaugrana-stripe-left {
-  border-right: 4px solid var(--primary-garnet);
+.blaugrana-border-left {
+  border-right: 5px solid #A50044;
 }
 
-.blaugrana-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-tactical);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease-in-out;
-}
-
-.blaugrana-card:hover {
-  border-color: var(--primary-blue);
-  box-shadow: 0 4px 12px rgba(0, 77, 152, 0.08);
-}
-
-/* Tactical Pitch Styled Background & Details */
-.tactical-pitch {
-  background-color: var(--pitch-green);
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--pitch-green) 0px,
-    var(--pitch-green) 40px,
-    var(--pitch-green-light) 40px,
-    var(--pitch-green-light) 80px
-  );
-  border: 2px solid var(--border-tactical);
-  position: relative;
-}
-
-.scoreboard-num {
+.scoreboard-number {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   line-height: 1;
 }
 
-.gold-accent-badge {
-  background-color: rgba(237, 187, 0, 0.12);
-  border: 1px solid var(--accent-gold);
-  color: #B38D00;
+/* Tactical Pitch styling */
+.tactical-pitch-bg {
+  background-color: #0A291C;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #0A291C 0px,
+    #0A291C 50px,
+    #0F3E2B 50px,
+    #0F3E2B 100px
+  );
 }
 
-/* Animated Tactical Pulse for Active Lesson Player Dot */
-@keyframes tacticalPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(165, 0, 68, 0.6);
-  }
-  70% {
-    box-shadow: 0 0 0 12px rgba(165, 0, 68, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(165, 0, 68, 0);
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.player-dot-active {
-  animation: tacticalPulse 2s infinite;
+::-webkit-scrollbar-track {
+  background: #F8F6F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #004D98;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A50044;
 }
