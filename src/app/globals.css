@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+:root {
+  --primary-blue: #004D98;
+  --primary-garnet: #A50044;
+  --accent-gold: #EDBB00;
+  --background: #F7F5F0;
+  --foreground: #1A1A1A;
+  --card-bg: #FFFFFF;
+  --surface-muted: #ECE9E1;
+  --pitch-green: #0E3625;
+  --pitch-green-light: #164631;
+  --pitch-line: rgba(255, 255, 255, 0.35);
+  --success: #1B8A5A;
+  --border-tactical: rgba(26, 26, 26, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0px !important; /* Sharp corners requirement from DESIGN.md */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Cairo', 'Source Sans 3', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  direction: rtl;
+}
+
+.font-oswald {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.font-cairo {
+  font-family: 'Cairo', sans-serif;
+}
+
+/* Signature Blaugrana Diagonal Stripe Motif for Card Headers */
+.blaugrana-stripe-top {
+  position: relative;
+}
+
+.blaugrana-stripe-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    var(--primary-blue) 0%, 
+    var(--primary-blue) 50%, 
+    var(--primary-garnet) 50%, 
+    var(--primary-garnet) 100%
+  );
+}
+
+.blaugrana-stripe-left {
+  border-right: 4px solid var(--primary-garnet);
+}
+
+.blaugrana-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-tactical);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease-in-out;
+}
+
+.blaugrana-card:hover {
+  border-color: var(--primary-blue);
+  box-shadow: 0 4px 12px rgba(0, 77, 152, 0.08);
+}
+
+/* Tactical Pitch Styled Background & Details */
+.tactical-pitch {
+  background-color: var(--pitch-green);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--pitch-green) 0px,
+    var(--pitch-green) 40px,
+    var(--pitch-green-light) 40px,
+    var(--pitch-green-light) 80px
+  );
+  border: 2px solid var(--border-tactical);
+  position: relative;
+}
+
+.scoreboard-num {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.gold-accent-badge {
+  background-color: rgba(237, 187, 0, 0.12);
+  border: 1px solid var(--accent-gold);
+  color: #B38D00;
+}
+
+/* Animated Tactical Pulse for Active Lesson Player Dot */
+@keyframes tacticalPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(165, 0, 68, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(165, 0, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(165, 0, 68, 0);
+  }
+}
+
+.player-dot-active {
+  animation: tacticalPulse 2s infinite;
+}
