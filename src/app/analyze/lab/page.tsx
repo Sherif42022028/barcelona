@@ -6,7 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { HeaderScoreboard } from "@/components/HeaderScoreboard";
 import { TacticalPitchBoard } from "@/components/TacticalPitchBoard";
 import { MATCH_CASES, MatchAnalysisCase } from "@/data/academyData";
-import { Activity, CheckCircle2, Play, Award, Sparkles, Brain } from "lucide-react";
+import { Activity, CheckCircle2 } from "lucide-react";
 
 export default function MatchAnalysisLabPage() {
   const [selectedCase, setSelectedCase] = useState<MatchAnalysisCase>(MATCH_CASES[0]);
@@ -21,25 +21,25 @@ export default function MatchAnalysisLabPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F6F0] text-[#121820] pb-24 font-cairo">
+    <div className="min-h-screen text-[#F8FAFC] pb-24 font-cairo">
       <Navbar />
       <HeaderScoreboard />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 space-y-8">
         {/* Title Header */}
-        <div className="flex items-center justify-between border-b-4 border-[#A50044] pb-3">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Activity className="w-5 h-5 text-[#A50044]" />
-              <span className="font-oswald text-xs font-bold text-[#A50044] uppercase tracking-widest">
+              <Activity className="w-5 h-5 text-[#E11D48]" />
+              <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest">
                 ANALYST WORKSPACE
               </span>
             </div>
-            <h2 className="font-oswald text-3xl font-bold text-[#001E42] uppercase">
+            <h2 className="font-oswald text-3xl font-bold text-white uppercase">
               MATCH ANALYSIS LAB (مختبر تحليل المباريات)
             </h2>
           </div>
-          <span className="text-xs text-gray-500 font-sans hidden sm:block">
+          <span className="text-xs text-[#94A3B8] font-sans hidden sm:block">
             تحول من متلقي إلى المحلل التكتيكي واستخرج القرار المناسب للحالة
           </span>
         </div>
@@ -48,16 +48,16 @@ export default function MatchAnalysisLabPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Tactical Pitch Video Simulator */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-[#001E42] text-white p-4 flex items-center justify-between border-b-2 border-[#EDBB00]">
+            <div className="glass-panel p-4 flex items-center justify-between rounded-xl border border-white/10">
               <div>
                 <span className="text-xs font-oswald text-[#EDBB00] uppercase font-bold block">
                   {selectedCase.phase}
                 </span>
-                <h3 className="font-oswald text-xl font-bold">
+                <h3 className="font-oswald text-xl font-bold text-white">
                   {selectedCase.matchTitle} — [{selectedCase.minuteTimestamp}]
                 </h3>
               </div>
-              <span className="text-xs font-oswald bg-[#A50044] px-2 py-0.5 font-bold">
+              <span className="text-xs font-oswald bg-[#A50044]/30 text-[#E11D48] border border-[#A50044]/40 px-2.5 py-0.5 font-bold rounded-md">
                 {selectedCase.difficulty}
               </span>
             </div>
@@ -75,17 +75,17 @@ export default function MatchAnalysisLabPage() {
           </div>
 
           {/* Analysis Task Panel */}
-          <div className="bg-white border-2 border-[#001E42] p-6 blaugrana-card-accent shadow-xl space-y-5">
-            <div className="border-b border-gray-200 pb-3">
-              <span className="font-oswald text-xs font-bold text-[#A50044] uppercase tracking-widest block">
+          <div className="glass-card p-6 glass-card-accent shadow-2xl space-y-5">
+            <div className="border-b border-white/10 pb-3">
+              <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest block">
                 ANALYSIS TASK
               </span>
-              <h4 className="font-oswald text-lg font-bold text-[#001E42] mt-1">
+              <h4 className="font-oswald text-lg font-bold text-white mt-1">
                 {selectedCase.title}
               </h4>
             </div>
 
-            <p className="text-sm text-gray-700 leading-relaxed font-cairo">
+            <p className="text-sm text-[#94A3B8] leading-relaxed font-cairo">
               {selectedCase.questionText}
             </p>
 
@@ -99,14 +99,14 @@ export default function MatchAnalysisLabPage() {
                     key={opt.id}
                     onClick={() => !isSubmitted && setSelectedOptionId(opt.id)}
                     disabled={isSubmitted}
-                    className={`w-full p-4 text-right border-2 font-semibold text-xs transition-all flex items-start justify-between gap-3 cursor-pointer ${
+                    className={`w-full p-4 text-right border-2 rounded-xl font-semibold text-xs transition-all flex items-start justify-between gap-3 cursor-pointer ${
                       isSelected
-                        ? "bg-blue-50 border-[#004D98] text-[#004D98] ring-2 ring-[#004D98]"
-                        : "bg-white border-gray-300 hover:border-[#004D98]"
+                        ? "bg-[#004D98]/40 border-[#38BDF8] text-white ring-2 ring-[#38BDF8]/40 glow-blue"
+                        : "bg-slate-900/60 border-white/10 hover:border-white/30 text-gray-200"
                     }`}
                   >
                     <span>{opt.text}</span>
-                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#004D98] shrink-0" />}
+                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#38BDF8] shrink-0" />}
                   </button>
                 );
               })}
@@ -116,21 +116,21 @@ export default function MatchAnalysisLabPage() {
               <button
                 onClick={handleSubmit}
                 disabled={!selectedOptionId}
-                className={`w-full py-3 text-xs font-oswald font-bold uppercase tracking-widest transition-colors ${
+                className={`w-full py-3.5 rounded-xl text-xs font-oswald font-bold uppercase tracking-widest transition-all ${
                   selectedOptionId
-                    ? "bg-[#A50044] hover:bg-[#70002E] text-white shadow-md cursor-pointer"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    ? "bg-gradient-to-r from-[#A50044] to-[#70002E] hover:from-[#70002E] hover:to-[#A50044] text-white shadow-lg cursor-pointer"
+                    : "bg-slate-900 text-gray-600 border border-white/5 cursor-not-allowed"
                 }`}
               >
                 Submit Tactical Analysis ➔
               </button>
             ) : (
-              <div className="space-y-3 pt-2 border-t border-gray-200">
+              <div className="space-y-3 pt-2 border-t border-white/10">
                 <div
-                  className={`p-4 border-r-4 text-xs font-cairo ${
+                  className={`p-4 rounded-xl border-r-4 text-xs font-cairo ${
                     activeOption?.isCorrect
-                      ? "bg-emerald-50 border-emerald-600 text-emerald-950"
-                      : "bg-red-50 border-[#A50044] text-red-950"
+                      ? "bg-emerald-950/60 border-emerald-500 text-emerald-200"
+                      : "bg-red-950/60 border-[#E11D48] text-red-200"
                   }`}
                 >
                   <strong className="block mb-1 text-sm">
@@ -140,14 +140,14 @@ export default function MatchAnalysisLabPage() {
                 </div>
 
                 {activeOption && (
-                  <div className="p-3 bg-gray-50 border border-gray-200 text-xs space-y-1">
-                    <span className="font-oswald font-bold text-[#004D98] uppercase block">
+                  <div className="p-3.5 bg-slate-900/80 rounded-xl border border-white/10 text-xs space-y-1.5">
+                    <span className="font-oswald font-bold text-[#38BDF8] uppercase block">
                       Competency Metrics Awarded:
                     </span>
-                    <div className="grid grid-cols-3 gap-2 text-center font-oswald font-bold">
-                      <div className="bg-white p-1 border">Structure: +{activeOption.scoreMetrics.structure}%</div>
-                      <div className="bg-white p-1 border">Decision: +{activeOption.scoreMetrics.decision}%</div>
-                      <div className="bg-white p-1 border">Comp: +{activeOption.scoreMetrics.comprehension}%</div>
+                    <div className="grid grid-cols-3 gap-2 text-center font-oswald font-bold text-gray-200">
+                      <div className="bg-slate-950 p-1.5 rounded-lg border border-white/5">Structure: +{activeOption.scoreMetrics.structure}%</div>
+                      <div className="bg-slate-950 p-1.5 rounded-lg border border-white/5">Decision: +{activeOption.scoreMetrics.decision}%</div>
+                      <div className="bg-slate-950 p-1.5 rounded-lg border border-white/5">Comp: +{activeOption.scoreMetrics.comprehension}%</div>
                     </div>
                   </div>
                 )}

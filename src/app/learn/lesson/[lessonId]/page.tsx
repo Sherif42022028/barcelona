@@ -12,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
-  XCircle,
   Play,
   Brain,
   Eye,
@@ -31,7 +30,6 @@ interface LessonPageProps {
 export default function LessonPage({ params }: LessonPageProps) {
   const resolvedParams = use(params);
 
-  // Search across all stages and modules for target lesson
   let lesson: LessonData | undefined;
   for (const stage of STAGES_DATA) {
     for (const module of stage.modules) {
@@ -44,7 +42,6 @@ export default function LessonPage({ params }: LessonPageProps) {
   }
 
   if (!lesson) {
-    // Fallback to first lesson
     lesson = STAGES_DATA[0].modules[0].lessons[0];
   }
 
@@ -79,46 +76,46 @@ export default function LessonPage({ params }: LessonPageProps) {
 
   const getStepIcon = (key: string) => {
     switch (key) {
-      case "LEARN": return <Brain className="w-5 h-5 text-[#004D98]" />;
-      case "SEE": return <Eye className="w-5 h-5 text-emerald-600" />;
-      case "DECONSTRUCT": return <Layers className="w-5 h-5 text-[#A50044]" />;
+      case "LEARN": return <Brain className="w-5 h-5 text-[#38BDF8]" />;
+      case "SEE": return <Eye className="w-5 h-5 text-emerald-400" />;
+      case "DECONSTRUCT": return <Layers className="w-5 h-5 text-[#E11D48]" />;
       case "THINK": return <HelpCircle className="w-5 h-5 text-[#EDBB00]" />;
-      case "DECIDE": return <Play className="w-5 h-5 text-[#004D98]" />;
-      case "FEEDBACK": return <Sparkles className="w-5 h-5 text-[#A50044]" />;
-      case "APPLY": return <Layers className="w-5 h-5 text-emerald-600" />;
+      case "DECIDE": return <Play className="w-5 h-5 text-[#38BDF8]" />;
+      case "FEEDBACK": return <Sparkles className="w-5 h-5 text-[#E11D48]" />;
+      case "APPLY": return <Layers className="w-5 h-5 text-emerald-400" />;
       case "ASSESS": return <Award className="w-5 h-5 text-[#EDBB00]" />;
-      default: return <Brain className="w-5 h-5 text-[#004D98]" />;
+      default: return <Brain className="w-5 h-5 text-[#38BDF8]" />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F6F0] text-[#121820] pb-24 font-cairo">
+    <div className="min-h-screen text-[#F8FAFC] pb-24 font-cairo">
       <Navbar />
       <HeaderScoreboard />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
         {/* Navigation Top Bar */}
-        <div className="flex items-center justify-between border-b border-gray-300 pb-3">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3">
           <Link
             href={`/learn/stage/${lesson.stageId}`}
-            className="inline-flex items-center gap-2 text-xs font-oswald text-[#004D98] hover:text-[#002D5E] font-bold uppercase"
+            className="inline-flex items-center gap-2 text-xs font-oswald text-[#38BDF8] hover:text-white font-bold uppercase transition-colors"
           >
             <ArrowRight className="w-4 h-4" />
             Back to Stage Overview
           </Link>
 
-          <span className="text-xs font-oswald font-bold text-[#A50044] uppercase tracking-widest">
+          <span className="text-xs font-oswald font-bold text-[#E11D48] uppercase tracking-widest">
             {lesson.type} Lesson · 8-Step Learning Loop
           </span>
         </div>
 
         {/* 8-Step Progress Indicator Bar */}
-        <section className="bg-white border-2 border-[#001E42] p-4 shadow-md space-y-3">
+        <section className="glass-card p-4 shadow-xl space-y-3">
           <div className="flex items-center justify-between text-xs font-oswald font-bold">
-            <span className="text-[#001E42] uppercase">
+            <span className="text-white uppercase">
               Step 0{currentStep.stepNumber}: {currentStep.stepKey}
             </span>
-            <span className="text-[#A50044]">
+            <span className="text-[#E11D48]">
               {Math.round(((currentStepIdx + 1) / steps.length) * 100)}% Completed
             </span>
           </div>
@@ -128,12 +125,12 @@ export default function LessonPage({ params }: LessonPageProps) {
               <button
                 key={idx}
                 onClick={() => setCurrentStepIdx(idx)}
-                className={`py-1.5 text-center text-[10px] font-oswald font-bold border transition-all cursor-pointer ${
+                className={`py-2 rounded-md text-center text-[10px] font-oswald font-bold border transition-all cursor-pointer ${
                   idx === currentStepIdx
-                    ? "bg-[#004D98] text-[#EDBB00] border-[#EDBB00] ring-2 ring-[#004D98]"
+                    ? "bg-[#004D98] text-[#EDBB00] border-[#EDBB00] shadow-lg glow-blue"
                     : idx < currentStepIdx
-                    ? "bg-emerald-100 text-emerald-800 border-emerald-400"
-                    : "bg-gray-100 text-gray-500 border-gray-300"
+                    ? "bg-emerald-950/60 text-emerald-400 border-emerald-500/40"
+                    : "bg-slate-950/60 text-gray-500 border-white/5"
                 }`}
               >
                 0{s.stepNumber}
@@ -143,22 +140,22 @@ export default function LessonPage({ params }: LessonPageProps) {
         </section>
 
         {/* Step Main Experience Box */}
-        <section className="bg-white border-2 border-[#001E42] p-6 sm:p-8 blaugrana-card-accent shadow-xl space-y-6">
-          <div className="flex items-center gap-3 border-b border-gray-200 pb-4">
-            <div className="p-3 bg-[#F8F6F0] border border-gray-300">
+        <section className="glass-card p-6 sm:p-8 glass-card-accent shadow-2xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+            <div className="p-3 bg-slate-900 border border-white/10 rounded-xl">
               {getStepIcon(currentStep.stepKey)}
             </div>
             <div>
-              <span className="font-oswald text-xs font-bold text-[#A50044] uppercase tracking-widest block">
+              <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest block">
                 STEP 0{currentStep.stepNumber} — {currentStep.stepKey}
               </span>
-              <h2 className="font-oswald text-2xl sm:text-3xl font-bold text-[#001E42]">
+              <h2 className="font-oswald text-2xl sm:text-3xl font-bold text-white">
                 {currentStep.title}
               </h2>
             </div>
           </div>
 
-          {/* Tactical Pitch Visual (if available on lesson) */}
+          {/* Tactical Pitch Visual */}
           {lesson.pitchScenario && (
             <div className="space-y-2">
               <TacticalPitchBoard
@@ -170,14 +167,14 @@ export default function LessonPage({ params }: LessonPageProps) {
           )}
 
           {/* Step Content */}
-          <div className="text-base text-gray-800 leading-relaxed space-y-3 font-cairo">
+          <div className="text-base text-gray-200 leading-relaxed space-y-3 font-cairo">
             <p>{currentStep.content}</p>
           </div>
 
-          {/* Interactive Decision Options (Step 5: DECIDE) */}
+          {/* Interactive Decision Options */}
           {currentStep.options && currentStep.options.length > 0 && (
             <div className="space-y-4 pt-2">
-              <h3 className="font-oswald text-lg font-bold text-[#004D98] uppercase">
+              <h3 className="font-oswald text-lg font-bold text-[#38BDF8] uppercase">
                 اختر القرار التكتيكي الأمثل:
               </h3>
 
@@ -189,14 +186,14 @@ export default function LessonPage({ params }: LessonPageProps) {
                     <button
                       key={opt.id}
                       onClick={() => handleOptionSelect(opt.id)}
-                      className={`p-4 text-right border-2 font-semibold text-sm transition-all flex items-center justify-between gap-3 cursor-pointer ${
+                      className={`p-4 text-right border-2 rounded-xl font-semibold text-sm transition-all flex items-center justify-between gap-3 cursor-pointer ${
                         isSelected
-                          ? "bg-blue-50 border-[#004D98] text-[#004D98] ring-2 ring-[#004D98]"
-                          : "bg-white border-gray-300 hover:border-[#004D98]"
+                          ? "bg-[#004D98]/40 border-[#38BDF8] text-white ring-2 ring-[#38BDF8]/40 glow-blue"
+                          : "bg-slate-900/60 border-white/10 hover:border-white/30 text-gray-200"
                       }`}
                     >
                       <span>{opt.text}</span>
-                      {isSelected && <CheckCircle2 className="w-5 h-5 text-[#004D98] shrink-0" />}
+                      {isSelected && <CheckCircle2 className="w-5 h-5 text-[#38BDF8] shrink-0" />}
                     </button>
                   );
                 })}
@@ -206,20 +203,20 @@ export default function LessonPage({ params }: LessonPageProps) {
                 <button
                   onClick={handleConfirmDecision}
                   disabled={!selectedOptionId}
-                  className={`w-full py-3 text-sm font-oswald font-bold uppercase tracking-widest transition-colors ${
+                  className={`w-full py-3.5 rounded-xl text-sm font-oswald font-bold uppercase tracking-widest transition-all ${
                     selectedOptionId
-                      ? "bg-[#004D98] hover:bg-[#002D5E] text-white shadow-md cursor-pointer"
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      ? "bg-gradient-to-r from-[#004D98] to-[#002D5E] hover:from-[#002D5E] hover:to-[#004D98] text-white shadow-lg cursor-pointer border border-blue-400/30"
+                      : "bg-slate-900 text-gray-600 border border-white/5 cursor-not-allowed"
                   }`}
                 >
                   Confirm Tactical Decision ➔
                 </button>
               ) : (
                 <div
-                  className={`p-4 border-r-4 text-sm font-cairo ${
+                  className={`p-4 rounded-xl border-r-4 text-sm font-cairo ${
                     currentStep.options.find((o) => o.id === selectedOptionId)?.isCorrect
-                      ? "bg-emerald-50 border-emerald-600 text-emerald-950"
-                      : "bg-red-50 border-[#A50044] text-red-950"
+                      ? "bg-emerald-950/60 border-emerald-500 text-emerald-200"
+                      : "bg-red-950/60 border-[#E11D48] text-red-200"
                   }`}
                 >
                   <p className="font-bold mb-1">
@@ -234,14 +231,14 @@ export default function LessonPage({ params }: LessonPageProps) {
           )}
 
           {/* Stepper Footer Controls */}
-          <div className="pt-6 border-t border-gray-200 flex items-center justify-between">
+          <div className="pt-6 border-t border-white/10 flex items-center justify-between">
             <button
               onClick={handlePrevStep}
               disabled={currentStepIdx === 0}
-              className={`inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-oswald font-bold uppercase transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-oswald font-bold uppercase transition-colors ${
                 currentStepIdx === 0
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  ? "bg-slate-900 text-gray-600 border border-white/5 cursor-not-allowed"
+                  : "bg-slate-900 border border-white/10 text-gray-200 hover:bg-slate-800 cursor-pointer"
               }`}
             >
               <ChevronRight className="w-4 h-4" />
@@ -251,10 +248,10 @@ export default function LessonPage({ params }: LessonPageProps) {
             <button
               onClick={handleNextStep}
               disabled={currentStepIdx === steps.length - 1}
-              className={`inline-flex items-center gap-1.5 px-6 py-2.5 text-xs font-oswald font-bold uppercase transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-6 py-2.5 rounded-lg text-xs font-oswald font-bold uppercase transition-all ${
                 currentStepIdx === steps.length - 1
-                  ? "bg-emerald-700 text-white cursor-not-allowed"
-                  : "bg-[#004D98] hover:bg-[#002D5E] text-white cursor-pointer shadow-md"
+                  ? "bg-emerald-800 text-white cursor-not-allowed"
+                  : "bg-gradient-to-r from-[#004D98] to-[#002D5E] hover:from-[#002D5E] hover:to-[#004D98] text-white cursor-pointer shadow-lg border border-blue-400/30"
               }`}
             >
               Next Step

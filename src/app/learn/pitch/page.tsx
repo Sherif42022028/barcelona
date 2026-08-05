@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { HeaderScoreboard } from "@/components/HeaderScoreboard";
 import { TacticalPitchBoard, PitchPlayer } from "@/components/TacticalPitchBoard";
-import { Grid, Compass, CheckCircle2, ArrowRight, Play, Eye } from "lucide-react";
+import { Grid, CheckCircle2, ArrowRight } from "lucide-react";
 
 interface PositionDetail {
   id: string;
@@ -74,31 +74,31 @@ export default function InteractivePitchPage() {
   const currentDetail = POSITIONS_DATA[selectedPlayerId] || POSITIONS_DATA["cdm"];
 
   return (
-    <div className="min-h-screen bg-[#F8F6F0] text-[#121820] pb-24 font-cairo">
+    <div className="min-h-screen text-[#F8FAFC] pb-24 font-cairo">
       <Navbar />
       <HeaderScoreboard />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 space-y-8">
         {/* Title Header */}
-        <div className="flex items-center justify-between border-b-4 border-[#004D98] pb-3">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Grid className="w-5 h-5 text-[#A50044]" />
-              <span className="font-oswald text-xs font-bold text-[#A50044] uppercase tracking-widest">
+              <Grid className="w-5 h-5 text-[#E11D48]" />
+              <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest">
                 INTERACTIVE EXPERIENTIAL TOOL
               </span>
             </div>
-            <h2 className="font-oswald text-3xl font-bold text-[#001E42] uppercase">
+            <h2 className="font-oswald text-3xl font-bold text-white uppercase">
               INTERACTIVE PITCH (أداة الملعب التفاعلي المخصصة)
             </h2>
           </div>
-          <span className="text-xs text-gray-500 font-sans hidden sm:block">
+          <span className="text-xs text-[#94A3B8] font-sans hidden sm:block">
             اضغط على أي مركز أو لاعب للاطلاع على الأدوار والعلاقات التموقعية
           </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Pitch Board Interactive Component */}
+          {/* Pitch Board */}
           <div className="lg:col-span-2 space-y-2">
             <TacticalPitchBoard
               players={pitchPlayers}
@@ -107,38 +107,38 @@ export default function InteractivePitchPage() {
               selectedPlayerId={selectedPlayerId}
               onPlayerClick={(id) => setSelectedPlayerId(id)}
             />
-            <p className="text-xs text-center text-gray-500 font-cairo">
+            <p className="text-xs text-center text-[#94A3B8] font-cairo">
               انقر على أي لاعب على الملعب لتغيير التحليل والمستند المباشر
             </p>
           </div>
 
-          {/* Selected Position Details Panel */}
-          <div className="bg-white border-2 border-[#001E42] p-6 blaugrana-card-accent shadow-xl space-y-5">
-            <div className="border-b border-gray-200 pb-3">
-              <span className="font-oswald text-xs font-bold text-[#A50044] uppercase tracking-widest block">
+          {/* Selected Position Details */}
+          <div className="glass-card p-6 glass-card-accent shadow-2xl space-y-5">
+            <div className="border-b border-white/10 pb-3">
+              <span className="font-oswald text-xs font-bold text-[#E11D48] uppercase tracking-widest block">
                 SELECTED POSITION
               </span>
-              <h3 className="font-oswald text-2xl font-bold text-[#001E42]">
+              <h3 className="font-oswald text-2xl font-bold text-white">
                 {currentDetail.roleName}
               </h3>
-              <p className="text-xs font-bold text-[#004D98]">
+              <p className="text-xs font-bold text-[#38BDF8]">
                 {currentDetail.roleAr}
               </p>
             </div>
 
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p className="text-sm text-[#94A3B8] leading-relaxed">
               {currentDetail.roleDescription}
             </p>
 
             {/* Principles */}
             <div className="space-y-2">
-              <span className="font-oswald text-xs font-bold text-[#001E42] uppercase block">
+              <span className="font-oswald text-xs font-bold text-white uppercase block">
                 Key Principles (القواعد الرئيسية):
               </span>
-              <ul className="space-y-1.5 text-xs text-gray-800">
+              <ul className="space-y-1.5 text-xs text-gray-300">
                 {currentDetail.keyPrinciples.map((p, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                     <span>{p}</span>
                   </li>
                 ))}
@@ -146,21 +146,21 @@ export default function InteractivePitchPage() {
             </div>
 
             {/* Relationships & Movements */}
-            <div className="pt-2 border-t border-gray-100 space-y-2 text-xs">
+            <div className="pt-3 border-t border-white/10 space-y-2 text-xs">
               <div>
-                <strong className="text-[#004D98] block">العلاقات التموقعية (Relationships):</strong>
-                <p className="text-gray-700">{currentDetail.relationships}</p>
+                <strong className="text-[#38BDF8] block">العلاقات التموقعية (Relationships):</strong>
+                <p className="text-[#94A3B8]">{currentDetail.relationships}</p>
               </div>
               <div>
-                <strong className="text-[#A50044] block">الحركة التكتيكية (Movements):</strong>
-                <p className="text-gray-700">{currentDetail.movements}</p>
+                <strong className="text-[#E11D48] block">الحركة التكتيكية (Movements):</strong>
+                <p className="text-[#94A3B8]">{currentDetail.movements}</p>
               </div>
             </div>
 
             <div className="pt-3">
               <Link
                 href="/learn/path"
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#004D98] hover:bg-[#002D5E] text-white py-2.5 text-xs font-oswald uppercase font-bold tracking-wider transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#004D98] to-[#002D5E] hover:from-[#002D5E] hover:to-[#004D98] text-white py-3 rounded-xl text-xs font-oswald uppercase font-bold tracking-wider transition-all shadow-lg border border-blue-400/30"
               >
                 Explore Related Lessons ➔
               </Link>
